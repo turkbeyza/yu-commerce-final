@@ -24,10 +24,10 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-// Enable CORS - Allow all origins
+// Enable CORS
 app.use(
     cors({
-        origin: '*',
+        origin: 'https://yucommerce.beyzaturk.me',
         credentials: true,
     })
 );
