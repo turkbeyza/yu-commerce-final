@@ -1,5 +1,5 @@
 // ==================== API Configuration ====================
-const API_URL = window.YU_API_URL || 'http://localhost:5000/api';
+const API_URL = window.YU_API_URL || 'https://yu-commerce-final.onrender.com/api';
 
 // ==================== State Management ====================
 const LS = {
