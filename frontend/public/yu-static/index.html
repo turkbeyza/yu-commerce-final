@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YU - Modern E-Commerce</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico?v=1">
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=1">
+  <link rel="stylesheet" href="./style.css" />
+  <script>
+    // Configuration for local and production
+    window.YU_API_URL = window.location.hostname === 'localhost'
+      ? 'http://localhost:5000/api'
+      : 'https://yu-commerce-backend.onrender.com/api'; // Replace with your actual production backend URL
+  </script>
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-area">
+        <button class="icon-btn burger" id="burgerBtn" aria-label="Open menu">☰</button>
+        <a class="logo" href="#home" aria-label="YU home">YU</a>
+
+        <nav id="navLinks" class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#shop">Shop</a>
+          <a href="./orders.html">Orders</a>
+          <a href="#about">About</a>
+        </nav>
+      </div>
+
+      <div class="header-actions">
+        <div class="search-box" role="search">
+          <span aria-hidden="true">🔍</span>
+          <input id="searchInput" type="text" placeholder="Search products..." />
+        </div>
+
+        <button class="icon-btn user-btn" id="userBtn" aria-label="User account">
+          <span class="user-icon" id="userIcon">👤</span>
+          <span class="user-name" id="userName" style="display:none;"></span>
+        </button>
+
+        <button class="icon-btn" id="wishlistBtn" aria-label="Open wishlist">
+          <span style="font-size: 1.5rem;">❤️</span>
+          <span class="cart-badge" id="wishCount" style="display:none;">0</span>
+        </button>
+
+        <button class="icon-btn" id="cartBtn" aria-label="Open cart">
+          <span style="font-size: 1.5rem;">🛒</span>
+          <span class="cart-badge" id="cartCount" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="#home" class="mobile-link">Home</a>
+      <a href="#shop" class="mobile-link">Shop</a>
+      <a href="./orders.html" class="mobile-link">Orders</a>
+      <a href="#about" class="mobile-link">About</a>
+    </div>
+  </header>
+
+
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-circle-1"></div>
+      <div class="hero-circle-2"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span>⚡</span>
+          <span>Winter Collection 2025</span>
+        </div>
+        <h2>Where YU<br />Shop Smarter.</h2>
+        <p>Breathe new life into your wardrobe with premium products. Up to 50% off.</p>
+
+        <div class="hero-buttons">
+          <button class="btn-primary" id="startShoppingBtn">Start Shopping</button>
+          <button class="btn-secondary" id="viewCollectionBtn">View Collection</button>
+        </div>
+
+        <div class="hero-mini">
+          <div class="mini-card">
+            <div class="mini-icon">✨</div>
+            <div>
+              <div class="mini-title">Premium picks</div>
+              <div class="mini-sub">Curated weekly</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-icon">⚡</div>
+            <div>
+              <div class="mini-title">Fast delivery</div>
+              <div class="mini-sub">2–4 business days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image" aria-hidden="true">
+        <img src="./hero-logo.png" alt="YU" />
+      </div>
+    </div>
+  </section>
+
+
+  <section id="shop" class="shop-wrap">
+    <section class="categories">
+      <button class="category-btn active" data-cat="all">
+        <span style="font-size: 1.25rem;">🌟</span><span>All</span>
+      </button>
+      <button class="category-btn" data-cat="electronics">
+        <span style="font-size: 1.25rem;">📱</span><span>Electronics</span>
+      </button>
+      <button class="category-btn" data-cat="fashion">
+        <span style="font-size: 1.25rem;">👔</span><span>Fashion</span>
+      </button>
+      <button class="category-btn" data-cat="lifestyle">
+        <span style="font-size: 1.25rem;">🏡</span><span>Lifestyle</span>
+      </button>
+    </section>
+
+    <section class="products-section">
+      <div class="products-header">
+        <div class="ph-left">
+          <h3>Featured Products</h3>
+          <div class="muted" id="resultsText">Showing all products</div>
+        </div>
+
+        <div class="ph-right">
+          <div class="trending">
+            <span>📈</span>
+            <span>Trending Products</span>
+          </div>
+
+          <div class="sort-box">
+            <label for="sortSelect" class="sort-label">Sort:</label>
+            <select id="sortSelect">
+              <option value="featured">Featured</option>
+              <option value="price_asc">Price: Low → High</option>
+              <option value="price_desc">Price: High → Low</option>
+              <option value="rating_desc">Rating: High → Low</option>
+              <option value="name_asc">Name: A → Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+      </div>
+
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-emoji">🫠</div>
+        <h4>No results found</h4>
+        <p>Try a different keyword or reset filters.</p>
+        <button class="btn-primary" id="resetFiltersBtn">Reset</button>
+      </div>
+    </section>
+  </section>
+
+
+  <section id="about" class="info-section">
+    <div class="info-container">
+      <h3>About YU</h3>
+      <p>
+        YU is a modern shopping experience focused on clean design and delightful interactions.
+        This is a front-end demo: products, wishlist, cart, and checkout UI work fully in the browser.
+      </p>
+
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">🎯</div>
+          <h4>Curated</h4>
+          <p>Handpicked items with tags like Bestseller / New / Hot.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🧠</div>
+          <h4>Smart UX</h4>
+          <p>Search, filter, sort, quick view, and smooth cart flow.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">💾</div>
+          <h4>Persistent</h4>
+          <p>Your cart & wishlist are saved with localStorage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <section class="features">
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <h4>Free Shipping</h4>
+        <p>On all orders over $500</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <h4>Secure Payment</h4>
+        <p>Protected with SSL certificate</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">↩️</div>
+        <h4>Easy Returns</h4>
+        <p>Free returns within 30 days</p>
+      </div>
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h5>YU</h5>
+        <p>The right place for premium shopping experience.</p>
+      </div>
+      <div class="footer-section">
+        <h6>Shopping</h6>
+        <ul>
+          <li><a href="#shop">All Products</a></li>
+          <li><a href="#shop">Campaigns</a></li>
+          <li><a href="#shop">New Arrivals</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h6>Customer Service</h6>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#about">FAQ</a></li>
+          <li><a href="./orders.html">Track Order</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h6>Follow Us</h6>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="X">🐦</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 YU. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <div class="overlay" id="overlay" style="display:none;"></div>
+
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeProductModal" aria-label="Close">✖</button>
+      <div class="modal-body" id="productModalBody"></div>
+    </div>
+  </div>
+
+
+  <aside class="drawer" id="wishlistDrawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Wishlist</h3>
+      <button class="icon-btn" id="closeWishlist" aria-label="Close wishlist">✖</button>
+    </div>
+    <div class="drawer-body" id="wishlistBody"></div>
+    <div class="drawer-footer">
+      <button class="btn-secondary full" id="wishlistClearBtn">Clear Wishlist</button>
+    </div>
+  </aside>
+
+
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Your Cart</h3>
+      <button class="icon-btn" id="closeCart" aria-label="Close cart">✖</button>
+    </div>
+
+    <div class="drawer-body" id="cartBody"></div>
+
+    <div class="drawer-footer">
+      <div class="coupon-row">
+        <input id="couponInput" type="text" placeholder="Coupon code" />
+        <button id="applyCouponBtn" class="btn-apply">
+          Apply
+        </button>
+      </div>
+
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><strong id="subtotalText">$0</strong></div>
+        <div class="row"><span>Discount</span><strong id="discountText">$0</strong></div>
+        <div class="row total"><span>Total</span><strong id="totalText">$0</strong></div>
+      </div>
+
+      <button class="btn-primary full" id="checkoutBtn">Checkout</button>
+      <button class="btn-secondary full" id="continueShoppingBtn">Continue Shopping</button>
+    </div>
+  </aside>
+
+
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-card wide">
+      <button class="modal-close" id="closeCheckoutModal" aria-label="Close">✖</button>
+
+      <div class="checkout-grid">
+        <div class="checkout-left">
+          <h3>Checkout</h3>
+          <p class="muted">Front-end demo checkout. No real payment will be processed.</p>
+
+          <form id="checkoutForm" class="checkout-form">
+            <div class="grid-2">
+              <div class="field">
+                <label>Full name</label>
+                <input id="coName" required placeholder="Jane Doe" />
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input id="coEmail" type="email" required placeholder="jane@example.com" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>City</label>
+                <input id="coCity" required placeholder="İzmir" />
+              </div>
+              <div class="field">
+                <label>ZIP</label>
+                <input id="coZip" required placeholder="35000" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Address</label>
+              <input id="coAddress" required placeholder="Street / Building / Flat" />
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>Card number</label>
+                <input id="coCard" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" required />
+              </div>
+              <div class="field">
+                <label>Expiry</label>
+                <input id="coExpiry" maxlength="5" placeholder="MM/YY" required />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>CVC</label>
+                <input id="coCvc" inputmode="numeric" maxlength="4" placeholder="123" required />
+              </div>
+              <div class="field">
+                <label>Note (optional)</label>
+                <input id="coNote" placeholder="Leave at the door..." />
+              </div>
+            </div>
+
+            <button class="btn-primary full" type="submit">Place Order</button>
+          </form>
+        </div>
+
+        <div class="checkout-right">
+          <h4>Order Summary</h4>
+          <div class="summary-box" id="checkoutSummary"></div>
+          <div class="summary-totals">
+            <div class="row"><span>Subtotal</span><strong id="coSubtotal">$0</strong></div>
+            <div class="row"><span>Discount</span><strong id="coDiscount">$0</strong></div>
+            <div class="row total"><span>Total</span><strong id="coTotal">$0</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal" id="authModal" aria-hidden="true">
+    <div class="modal-card" style="max-width: 420px;">
+      <button class="modal-close" id="closeAuthModal" aria-label="Close">✖</button>
+
+      <div class="auth-modal-body">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab" data-tab="login">Login</button>
+          <button class="auth-tab" id="registerTab" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn-primary full">Login</button>
+          <p class="auth-hint">Demo: user@yucommerce.com / user123</p>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form" style="display:none;">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="registerName" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="registerEmail" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="registerPassword" placeholder="••••••••" minlength="6" required />
+          </div>
+          <button type="submit" class="btn-primary full">Create Account</button>
+        </form>
+
+        <!-- Logged In State -->
+        <div id="loggedInState" class="logged-in-state" style="display:none;">
+          <div class="user-avatar">👤</div>
+          <h4 id="loggedInName">Welcome!</h4>
+          <p id="loggedInEmail" class="muted"></p>
+          <button id="logoutBtn" class="btn-secondary full">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="toasts" id="toasts"></div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
